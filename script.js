@@ -54,11 +54,35 @@ function displayBooks() {
         })
 
         // add book
-        bookElement.addEventListener("submit", (event) => {
-            event.preventDefault();
+        bookElement.querySelector(".addBook").addEventListener("click", (event) => {
 
-            addBookToLibrary(name, author, pages, read);
-            displayBooks();
+            const form = document.createElement("form");
+            form.innerHTML = `
+            <input type="text" name="name" placeholder="Name">
+            <input type="text" name="author" placeholder="Author">
+            <input type="number" name="pages" placeholder="Pages">
+            <input type="checkbox" name="read" placeholder="Read">`;
+
+            const addBtn = document.createElement("button");
+            addBtn.type = "submit"; // * 
+            addBtn.textContent = "Add Book";
+            form.appendChild(addBtn);
+
+            const library = document.getElementById("library");
+            library.appendChild(form);
+
+            form.addEventListener("submit", (e) => {
+                e.preventDefault();
+
+                const name = form.elements.name.value;
+                const author = form.elements.author.value;
+                const pages = form.elements.pages.value;
+                const read = form.elements.read.checked;
+
+                addBookToLibrary(name, author, pages, read);
+
+                displayBooks();
+            })
         })
 
     });
