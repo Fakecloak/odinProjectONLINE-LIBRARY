@@ -61,7 +61,8 @@ function displayBooks() {
             <input type="text" name="name" placeholder="Name">
             <input type="text" name="author" placeholder="Author">
             <input type="number" name="pages" placeholder="Pages">
-            <input type="checkbox" name="read" placeholder="Read">`;
+            <input type="checkbox" name="read" placeholder="Read">
+            <p class="error" style="color: red;"></p>`;
 
             const addBtn = document.createElement("button");
             addBtn.type = "submit"; // * 
@@ -71,6 +72,8 @@ function displayBooks() {
             const library = document.getElementById("library");
             library.appendChild(form);
 
+            const error = document.querySelector(".error");
+
             form.addEventListener("submit", (e) => {
                 e.preventDefault();
 
@@ -79,11 +82,25 @@ function displayBooks() {
                 const pages = form.elements.pages.value;
                 const read = form.elements.read.checked;
 
-                addBookToLibrary(name, author, pages, read);
+                if (!name || !author || !pages) {
+                    showError("Please fill in all fields");
+                    return;
+                }
 
+                error.style.display = "none";
+
+                addBookToLibrary(name, author, pages, read);
                 displayBooks();
-            })
+                form.reset();
+            });
+
+            function showError(message) {
+                error.textContent = message;
+                error.style.display = "block";
+            }
         })
+
+
 
     });
 
